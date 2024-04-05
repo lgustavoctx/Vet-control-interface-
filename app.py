@@ -17,11 +17,11 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
-    tutors = conn.execute('SELECT * FROM tutors').fetchall()
+    tutores = conn.execute('SELECT * FROM tutors').fetchall()
     animais = conn.execute('SELECT * FROM animais').fetchall()
     veterinarios = conn.execute('SELECT * FROM veterinarios').fetchall()
     conn.close()
-    return render_template('index.html', tutors=tutors, animais=animais, veterinarios=veterinarios)
+    return render_template('index.html', tutores=tutores, animais=animais, veterinarios=veterinarios)
 
 @app.route('/add_tutor', methods=['POST'])
 def add_tutor():
