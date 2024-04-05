@@ -1,6 +1,8 @@
+
 -- database.sql
 
-CREATE TABLE tutors (
+-- Create table for tutors
+CREATE TABLE IF NOT EXISTS tutors (
     id INTEGER PRIMARY KEY,
     nome TEXT NOT NULL,
     endereco TEXT NOT NULL,
@@ -9,7 +11,8 @@ CREATE TABLE tutors (
     email TEXT NOT NULL
 );
 
-CREATE TABLE animais (
+-- Create table for animais
+CREATE TABLE IF NOT EXISTS animais (
     id INTEGER PRIMARY KEY,
     tutor_id INTEGER NOT NULL,
     nome TEXT NOT NULL,
@@ -21,10 +24,12 @@ CREATE TABLE animais (
     FOREIGN KEY (tutor_id) REFERENCES tutors(id)
 );
 
-CREATE TABLE veterinarios (
+-- Create table for veterinarios
+CREATE TABLE IF NOT EXISTS veterinarios (
     id INTEGER PRIMARY KEY,
     nome TEXT NOT NULL,
     especialidade TEXT NOT NULL,
     telefone TEXT NOT NULL,
     email TEXT NOT NULL
 );
+
