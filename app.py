@@ -39,13 +39,12 @@ def add_tutor():
         conn.close()
         return redirect(url_for('index'))
     
-    # In case of a GET request or other methods, return a simple message
     return 'Method not allowed. Please use POST to submit a new tutor.'
 
 @app.route('/add_animal', methods=['POST'])
 def add_animal():
     if request.method == 'POST':
-        tutor_id = request.form['tutor_id']
+        nome_tutor = request.form['Nome Tutor']
         nome = request.form['nome']
         peso = request.form['peso']
         raca = request.form['raca']
@@ -54,13 +53,12 @@ def add_animal():
         problema_saude = request.form['problema_saude']
         
         conn = get_db_connection()
-        conn.execute('INSERT INTO animais (tutor_id, nome, peso, raca, tamanho, idade, problema_saude) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                     (tutor_id, nome, peso, raca, tamanho, idade, problema_saude))
+        conn.execute('INSERT INTO animais (nome_tutor, nome, peso, raca, tamanho, idade, problema_saude) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                     (nome_tutor, nome, peso, raca, tamanho, idade, problema_saude))
         conn.commit()
         conn.close()
         return redirect(url_for('index'))
     
-    # In case of a GET request or other methods, return a simple message
     return 'Method not allowed. Please use POST to submit a new animal.'
 
 @app.route('/add_veterinario', methods=['POST'])
@@ -78,7 +76,6 @@ def add_veterinario():
         conn.close()
         return redirect(url_for('index'))
     
-    # In case of a GET request or other methods, return a simple message
     return 'Method not allowed. Please use POST to submit a new veterinarian.'
 
 if __name__ == '__main__':
