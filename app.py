@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
 
-
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -22,6 +21,15 @@ def index():
     veterinarios = conn.execute('SELECT * FROM veterinarios').fetchall()
     conn.close()
     return render_template('index.html', tutores=tutores, animais=animais, veterinarios=veterinarios)
+
+@app.route('/cadastro-tutor')
+def cadastro_tutor():
+    conn = get_db_connection()
+    tutores = conn.execute('SELECT * FROM tutors').fetchall()
+    animais = conn.execute('SELECT * FROM animais').fetchall()
+    veterinarios = conn.execute('SELECT * FROM veterinarios').fetchall()
+    conn.close()
+    return render_template('cadastro-tutor.html', tutores=tutores, animais=animais, veterinarios=veterinarios)
 
 @app.route('/add_tutor', methods=['POST'])
 def add_tutor():
@@ -74,7 +82,7 @@ def add_veterinario():
                      (nome, especialidade, telefone, email))
         conn.commit()
         conn.close()
-        return redirect(url_for('index'))
+        return redirect(url_for('cadastro_tutor'))
     
     return 'Method not allowed. Please use POST to submit a new veterinarian.'
 
