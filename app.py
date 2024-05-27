@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import sqlite3
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE = os.path.join(BASE_DIR, 'data', 'database.db')
@@ -41,8 +43,8 @@ def add_tutor():
     data = request.json
     if data:
         conn = get_db_connection()
-        conn.execute('INSERT INTO tutors (nome, endereco, modo_pagamento, telefone, email) VALUES (?, ?, ?, ?, ?)',
-                     (data['nome'], data['endereco'], data['modo_pagamento'], data['telefone'], data['email']))
+        conn.execute('INSERT INTO tutors (nome, endereco, metodo_pagamento, telefone, email) VALUES (?, ?, ?, ?, ?)',
+                     (data['nome'], data['endereco'], data['metodo_pagamento'], data['telefone'], data['email']))
         conn.commit()
         conn.close()
         return jsonify({'message': 'Tutor added successfully'}), 201
@@ -54,8 +56,8 @@ def add_animal():
     data = request.json
     if data:
         conn = get_db_connection()
-        conn.execute('INSERT INTO animais (nome_tutor, nome, peso, raca, tamanho, idade, problema_saude) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                     (data['nome_tutor'], data['nome'], data['peso'], data['raca'], data['tamanho'], data['idade'], data['problema_saude']))
+        conn.execute('INSERT INTO animais (tutor_id, nome, peso, porte, sintomas, raca, idade) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                     (data['tutor_id'], data['nome'], data['peso'], data['porte'], data['sintomas'], data['raca'], data['idade']))
         conn.commit()
         conn.close()
         return jsonify({'message': 'Animal added successfully'}), 201
@@ -67,8 +69,8 @@ def add_veterinarian():
     data = request.json
     if data:
         conn = get_db_connection()
-        conn.execute('INSERT INTO veterinarios (nome, especialidade, telefone, email) VALUES (?, ?, ?, ?)',
-                     (data['nome'], data['especialidade'], data['telefone'], data['email']))
+        conn.execute('INSERT INTO veterinarios (nome, endereco, telefone, crmv, email) VALUES (?, ?, ?, ?, ?)',
+                     (data['nome'], data['endereco'], data['telefone'], data['crmv'], data['email']))
         conn.commit()
         conn.close()
         return jsonify({'message': 'Veterinarian added successfully'}), 201
