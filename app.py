@@ -38,13 +38,21 @@ def get_veterinarians():
     veterinarian_list = [dict(veterinarian) for veterinarian in veterinarians]
     return jsonify({'veterinarians': veterinarian_list})
 
+@app.route('/consultas', methods=['GET'])
+def get_consultas():
+    conn = get_db_connection()
+    consultas = conn.execute('SELECT * FROM consulta').fetchall()
+    conn.close()
+    consulta_list = [dict(consulta) for consulta in consultas]
+    return jsonify({'consultas': consulta_list})
+
 @app.route('/add_tutor', methods=['POST'])
 def add_tutor():
     data = request.json
     if data:
         conn = get_db_connection()
-        conn.execute('INSERT INTO tutors (nome, endereco, metodo_pagamento, telefone, email) VALUES (?, ?, ?, ?, ?)',
-                     (data['nome'], data['endereco'], data['metodo_pagamento'], data['telefone'], data['email']))
+        conn.execute('INSERT INTO tutors (nome, endereco, telefone, email) VALUES (?, ?, ?, ?, ?)',
+                     (data['nome'], data['endereco'], data['telefone'], data['email']))
         conn.commit()
         conn.close()
         return jsonify({'message': 'Tutor added successfully'}), 201
@@ -74,6 +82,19 @@ def add_veterinarian():
         conn.commit()
         conn.close()
         return jsonify({'message': 'Veterinarian added successfully'}), 201
+    else:
+        return jsonify({'error': 'No data provided'}), 400
+    
+@app.route('/add_consulta', methods=['POST'])
+def add_consulta():
+    data = request.json
+    if data:
+        conn = get_db_connection()
+        conn.execute('INSERT INTO consulta (data, veterinario, valor, metodo_pagamento, tutor, nome_animal) VALUES (?, ?, ?, ?, ?)',
+                     (data['data'], data['veterinario'], data['valor'], data['metodo_pagamento'], data['tutor'], data['nome_animal']))
+        conn.commit()
+        conn.close()
+        return jsonify({'message': 'appointment added successfully'}), 201
     else:
         return jsonify({'error': 'No data provided'}), 400
 
